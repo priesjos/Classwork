@@ -1,0 +1,33 @@
+header{
+    background-color: rgb(255, 57, 127);
+    background-color: rgba(195, 57, 127, 0.8)
+}
+
+nav{
+    background-color: #0a9ff4
+}
+
+body{
+    background-color: hotpink;
+    color: antiquewhite;
+}
+
+section{
+    background-color: crimson
+}
+
+section header{
+    color: #b7aefa;
+}
+
+aside{
+    background-color: #a01bfa
+}
+
+footer{
+    background-color: rgb(212, 57, 57);
+}
+
+h3{
+    color: antiquewhite;
+}
