@@ -6,6 +6,8 @@ body{
     background-position: center center;
     background-attachment: fixed;
     font-size: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 h1{
@@ -14,9 +16,13 @@ h1{
 }
 
 header{
-    background-color: rgb(225, 127, 127);
-    background-image: url("https://jlaw21.github.io/Resources/mario-pipe.png");
+    background-color: rgb(245, 27, 77);
     font-family: 'Kosugi Maru', cursive;
+    font-size: 130%;
+    padding-left: 10px 20px 10px 20px;
+    border-top: 10px double purple;
+    border-bottom: 10px double purple;
+    margin: 0 0 25px 0;
 }
 
 section{
@@ -42,8 +48,15 @@ nav{
     background-color: #0a9ff4;
     background-image: url("https://jlaw21.github.io/Resources/mario-pipe.png");
     background-size: contain;
-    border: 10px solid transparent;
-    border-image: url("https://jlaw21.github.io/Resources/mario-bricks.PNG") 30% round;
+    /*border: 10px solid transparent;
+    border-image: url("https://jlaw21.github.io/Resources/mario-bricks.PNG") 30% round;*/
+    border: 10px dotted violet;
+    border-radius: 100px;
+    text-align: center;
+    width: 80%;
+    height: 300px;
+    margin: auto;
+    
 }
 
 a{
