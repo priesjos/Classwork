@@ -1,0 +1,43 @@
+section{
+    font-size: 36px;
+}
+
+button{
+    font-size: 36px;
+}
+
+.middleRedBox{
+    position: relative;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
+.showMe{
+    display: none;
+}
+
+.anotherThing{
+    display: none;
+}
+
+.clickMe{
+    border: solid red 2px;
+}
+
+.enhance{
+    font-size: 3em;
+    font-style: bold;
+    color: rgb(61, 199, 176);
+}
+
+.borderify{
+    border: 3px dotted rgb(152, 41, 216);
+    border-radius: 12px;
+    background-color: magenta
+}
+
+.back-yellow{
+    background-color: yellow;
+    border: solid 4px green;
+}
