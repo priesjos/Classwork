@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="lesson1.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src='lesson1.js' async></script>
     </head>
 
     <body>
+        <form>
+            <fieldset>
+                <label for="userName">Please enter your name:</label>
+                <input type="text" id="userName"/>
+                <button type="button" onclick="showInfo()">SUBMIT</button>
+            </fieldset>
+        </form>
 
+        <div id="output"></div>
     </body>
 </html>

@@ -6,22 +6,27 @@ GLOBAL VARIABLES - Variable is able to be used throughout entire document/script
 LOCAL VARIABLES - Variable exclusive to section it was defined in
 */
 
-$(document).ready(function(){
+
+//ACTIVE
+/*$(document).ready(function(){
 
     getInfo();
     showInfo();
 
 
-})
+})*/
 
-var userInput;
+//DEFINITIONS
+var userName;
+
 
 function getInfo(){
-    userInput = "HI";
+    userName = $("#userName").val();
 }
 
 function showInfo(){
+    getInfo()
+    var message = "Hello, " + userName + ", glad to see you.";
 
-    alert(userInput);
-
+    $("#output").text(message);
 }
