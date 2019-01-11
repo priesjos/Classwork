@@ -28,5 +28,8 @@ button{
 
 #output{
     text-align: center;
-    
+    display: none;
+    opacity: 0;
+    position: relative;
+    top: 600px;
 }

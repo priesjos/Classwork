@@ -8,13 +8,18 @@ LOCAL VARIABLES - Variable exclusive to section it was defined in
 
 
 //ACTIVE
-/*$(document).ready(function(){
 
-    getInfo();
-    showInfo();
+//---------- NOT NEEDED FOR HTML TRIGGERING ----------//
+$(document).ready(function(){
 
+    $("#button").click(function(){
 
-})*/
+        showInfo();
+
+    })
+
+});
+//----------------------------------------------------//
 
 //DEFINITIONS
 var userName;
@@ -26,7 +31,7 @@ function getInfo(){
 
 function showInfo(){
     getInfo()
-    var message = "Hello, " + userName + ", glad to see you.";
+    var message = "Hello, " + userName + ", you have entered Sicko Mode.";
 
-    $("#output").text(message);
+    $("#output").text(message).show().animate({"top":"0px", "opacity":"1"}, 'slow');
 }
