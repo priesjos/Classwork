@@ -1,3 +1,6 @@
+var hasBow = true;
+var hasPhaser = true;
+
 $(document).ready(function(){
 
     updateNarrative(N1);
@@ -6,19 +9,21 @@ $(document).ready(function(){
     $("#B3").hide()
 
     $("#B1").click(function(){
-        if($(this).text() === N1O1){
+        if($("#B1").text() === N1O1){
             updateNarrative(N2);
-            $("#B1").text(N2O1);
-            $("#B2").text(N2O2);
-            $("#B3").text(N2O3);
+            updateButtons(N2O1, N2O2);
             $("#B3").show();
-        }
-
-        else if ($("#B1").text() === N2O1){
+        }    
+        
+        else if ($("#B1").text() === N2O1 && hasBow === true){
             updateNarrative(N5);
             $("#B1").text(N5O1);
             $("#B2").hide();
             $("#B3").hide();
+        }
+
+        else if ($("#B1").text === N2O1){
+            updateNarrative("Bow not obtained");
         }
 
         else if ($("#B1").text() === N5O1){
@@ -44,7 +49,7 @@ $(document).ready(function(){
     });
 
     $("#B2").click(function(){
-        if($(this).text() === N1O2){
+        if($("#B2").text() === N1O2){
             updateNarrative(N3);
             $("#B1").text(N3O1);
             $("#B2").text(N3O2);
@@ -52,8 +57,9 @@ $(document).ready(function(){
         }
         else if ($("#B2").text() === N2O2){
             updateNarrative(N4);
-            $("#B1").text("End");
-            $("#B2").hide();
+            hasBow = true;
+            $("#B1").text("Make pancakes");
+            $("#B2").text("Run to target practice.");
             $("#B3").hide();
         }
         else if ($("#B2").text() === N3O2){
@@ -104,7 +110,7 @@ var N3 = "This robot had killer instincts - to purge the Wild West of all evil-d
 var N3O1 = "heats his pork and beans.";
 var N3O2 = "purges the Wild West of evil-doers.";
 
-var N4 = "He continued to cook pancakes for the rest of his days and died a very uneventful life.";
+var N4 = "As he was going through his bags for pancake mix, he found his favorite weapon - a Super Slicer Arrow Blaster 4000, his bow.";
 
 var N5 = "The ranger approaches the insiduous Mr. Pig. He raises his bow and ...";
 var N5O1 = "shoots the arrow through Mr. Pig.";
@@ -133,4 +139,13 @@ var createButton = function(id, text){
 
     return "<button type=button id=" + id + ">" + text + "</button>"
 
+}
+
+var updateButtons = function(a, b, c){
+
+    $("#B3").hide();
+
+    $("#B1").text(a);
+    $("#B2").text(b);
+    $("#B3").text(c);
 }
