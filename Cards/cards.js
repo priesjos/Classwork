@@ -45,4 +45,6 @@ function cardToString(){
     if (rank == null || suit == null){
         return "Invalid card."
     }
+
+    return rank + " of " + suit;
 }
