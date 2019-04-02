@@ -4,8 +4,7 @@ function Card(rank, suit){
     this.rank = rank;
     this.suit = suit;
 
-    this.toString = cardToString();
-    this.createNode = cardCreateNode(); //handles images and graphics
+    this.toString = cardToString;
 
 }
 
@@ -43,8 +42,59 @@ function cardToString(){
     }
 
     if (rank == null || suit == null){
-        return "Invalid card."
+        return "Invalid card.";
     }
 
     return rank + " of " + suit;
 }
+
+var rank = parseInt((Math.random()*12)+1);
+var suit = parseInt((Math.random()*3)+1);
+var testCard = new Card(rank, suit);
+
+function Deck(){
+
+    this.cards = new Array();
+
+    this.makeDeck = deckMakeDeck;
+    
+    this.shuffle = deckShuffle;
+    /*
+    this.deal = deckDeal;
+    this.addCard = deckAddCard;
+    this.stackDeck = deckStackDeck;
+    this.cardCount = deckCardCount;
+    */
+}
+
+
+function deckMakeDeck(){
+
+    var maxSuit = 4;
+    var maxRank = 13;
+
+    for (var suit = 1; suit <= maxSuit; suit++){
+        for (var rank = 1; rank <= maxRank; rank++){
+            this.cards.push(new Card(rank, suit));
+        }
+    }
+
+}
+
+function deckShuffle(){
+
+    for(i = 0; i <= this.cards.length; i++){
+        var tribute = parseInt(Math.random()*this.cards.length);
+        var temp = this.cards[i];
+        this.cards[i] = this.cards[tribute];
+        this.cards[tribute] = temp;
+    }
+
+}
+
+
+var deck = new Deck();
+deck.makeDeck();
+deck.shuffle();
+
+alert(deck.cards);
