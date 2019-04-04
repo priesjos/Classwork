@@ -92,9 +92,8 @@ function deckShuffle(){
 
 }
 
-
 var deck = new Deck();
 deck.makeDeck();
 deck.shuffle();
 
-alert(deck.cards);
+$("#output2").text("deckeeee")
