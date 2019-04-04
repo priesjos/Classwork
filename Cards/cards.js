@@ -57,12 +57,12 @@ function Deck(){
     this.cards = new Array();
 
     this.makeDeck = deckMakeDeck;
-    
     this.shuffle = deckShuffle;
-    /*
     this.deal = deckDeal;
+    this.draw = deckDraw;
     this.addCard = deckAddCard;
-    this.stackDeck = deckStackDeck;
+    this.combine = deckStackDeck;
+    /*
     this.cardCount = deckCardCount;
     */
 }
@@ -92,8 +92,71 @@ function deckShuffle(){
 
 }
 
+function deckDeal(){
+
+    if (this.cards.length > 0){
+        return this.cards.shift();
+    }
+    else
+        return null;
+
+}
+
+function deckDraw(n){
+
+    if(n-1 >= 0 && n-1 < this.cards.length){
+       return this.cards.splice(n-1,1);
+    }
+    else
+        return null
+
+}
+
+function deckAddCard(card){this.cards.push(card)}
+
+function deckStackDeck(deck){
+
+    for (var i = 0; i < deck.cards.length; i++){
+        this.cards.push(deck.cards[i])
+    }
+    deck.cards = [];
+
+}
+
 var deck = new Deck();
+var hand = new Deck();
+
+deck.makeDeck();
+deck.shuffle();
+
+alert(deck.cards);
+
+for (var i = 0; i < 7; i ++){
+    hand.addCard(deck.deal());
+}
+
+alert(hand.cards);
+deck.combine(hand);
+alert (deck.cards);
+alert (hand.cards);
+
+/*
 deck.makeDeck();
 deck.shuffle();
 
 $("#output2").text("deckeeee")
+alert(deck.cards);
+alert(deck.deal());
+alert(deck.deal());
+alert(deck.deal());
+alert(deck.cards);
+
+deck.shuffle();
+alert(deck.cards);
+alert(deck.draw(5));
+
+var card = new Card(6, 2)
+alert(card);
+deck.addCard(card);
+alert(deck.cards);
+*/
