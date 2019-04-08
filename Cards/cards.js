@@ -34,10 +34,10 @@ function cardToString(){
 
     switch(this.suit){
 
-        case 'C': suit = "Clubs"; break;
-        case 'D': suit = "Diamonds"; break;
-        case 'H': suit = "Hearts"; break;
-        case 'S': suit = "Spades"; break;
+        case 1: suit = "Clubs"; break;
+        case 2: suit = "Diamonds"; break;
+        case 3: suit = "Hearts"; break;
+        case 4: suit = "Spades"; break;
         default: suit = null; break;
 
     }
@@ -82,17 +82,17 @@ function cardImage(){
 
     }
 
-    return "<img src='/cards'" + rank  + suit + ".png' />";
+    return "<img src='/cards_png_zip/PNG/'" + rank + suit + ".png' />";
 }
 
 var rank = parseInt((Math.random()*12)+1);
 var suit = parseInt((Math.random()*3)+1);
-var testCard = new Card(3, 'D');
-$("#hand").html(testCard.image());
+var testCard = new Card(3, 2);
+alert(testCard.toString())
 
 function Deck(){
 
-    this.cards = new Array();
+    this.cards = [];
 
     this.makeDeck = deckMakeDeck;
     this.shuffle = deckShuffle;
@@ -100,9 +100,7 @@ function Deck(){
     this.draw = deckDraw;
     this.addCard = deckAddCard;
     this.combine = deckStackDeck;
-    /*
-    this.cardCount = deckCardCount;
-    */
+    
 }
 
 
@@ -150,7 +148,9 @@ function deckDraw(n){
 
 }
 
-function deckAddCard(card){this.cards.push(card)}
+function deckAddCard(card){
+    this.cards.push(card)
+}
 
 function deckStackDeck(deck){
 
@@ -173,16 +173,19 @@ for (var i = 0; i < 7; i ++){
     hand.addCard(deck.deal());
 }
 
+for (var i = 0; i < hand.cards.length; i++){
+    $("#hand").append(hand.cards[i].image());
+}
+
+/*
 alert(hand.cards);
 deck.combine(hand);
 alert (deck.cards);
 alert (hand.cards);
 
-/*
 deck.makeDeck();
 deck.shuffle();
 
-$("#output2").text("deckeeee")
 alert(deck.cards);
 alert(deck.deal());
 alert(deck.deal());
@@ -192,9 +195,4 @@ alert(deck.cards);
 deck.shuffle();
 alert(deck.cards);
 alert(deck.draw(5));
-
-var card = new Card(6, 2)
-alert(card);
-deck.addCard(card);
-alert(deck.cards);
 */
