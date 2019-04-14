@@ -12,6 +12,10 @@
     </head>
 
     <body>
+        <div>
+            thanos debug thanos debug
+
+        </div>
         <script type="text/javascript">
 
             var config = {
@@ -43,6 +47,8 @@
                 this.load.image('ground', 'assets/concrete.png');
                 this.load.image('star', 'assets/star.png');
                 this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+                //24, 48
+                this.load.spritesheet('placeholder', 'assets/prototype_sprites.png', {frameWidth: 24, frameHeight: 48});
             }
 
             function render() 
@@ -59,73 +65,148 @@
                 //more platforms can be added later
 
                 //guy, with properties and collision, frame animations below
-                player = this.physics.add.sprite(100, 450, 'dude');
+                player = this.physics.add.sprite(100, 450, 'placeholder');
                 player.setCollideWorldBounds(true);
 
                 this.anims.create({
                     key: 'left',
-                    frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                    frames: this.anims.generateFrameNumbers('placeholder', { start: 0, end: 4 }),
                     frameRate: 10,
                     repeat: -1
                 });
 
                 this.anims.create({
-                    key: 'turn',
-                    frames: [ { key: 'dude', frame: 4 } ],
+                    key: 'idle',
+                    frames: [ { key: 'placeholder', frame: 5 } ],
                     frameRate: 20
                 });
 
                 this.anims.create({
                     key: 'right',
-                    frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                    frames: this.anims.generateFrameNumbers('placeholder', { start: 6, end: 10 }),
                     frameRate: 10,
                     repeat: -1
                 });
+
+                this.anims.create({
+                    key: 'fire',
+                    frames: this.anims.generateFrameNumbers('placeholder', {start: 11, end: 14}),
+                    frameRate: 10,
+                    repeat: 4
+                });
+
+                this.anims.create({
+                    key: 'jump',
+                    frames: this.anims.generateFrameNumbers('placeholder', {start: 15, end: 17}),
+                    frameRate: 10,
+                })
+
+                this.anims.create({
+                    key: 'fall',
+                    frames: this.anims.generateFrameNumbers('placeholder', {start: 18, end: 20}),
+                    frameRate: 10
+                })
 
                 //set collision of dynamic objects with platforms
                 this.physics.add.collider(player, platforms);
 
                 //input detection
                 keys = this.input.keyboard.addKeys('W,A,S,D,F') // keys.W, keys.A, keys.S, keys.D, etc.
+                player.anims.play('idle')
+                state = 0
 
+                /*
+                    state = 0; default
+                    state = 1; jumping
+                    state = 2; falling
+                    state = 3; firing
+                */
             }
 
             function update()
             {
-                //movement
-                if (keys.A.isDown)
+                switch (state)
                 {
-                    player.setVelocityX(-340);
-
-                    player.anims.play('left', true);
-                }
-                else if (keys.D.isDown)
-                {
-                    player.setVelocityX(340);
-
-                    player.anims.play('right', true);
-                }
-                else
-                {
-                    player.setVelocityX(0);
-
-                    player.anims.play('turn');
-                }
-
-                if (keys.W.isDown && player.body.touching.down)
-                {
-                    player.setVelocityY(-660);
-                }
-
-                //attack
-                
-                if(keys.F.isDown)
-                {
-                    alert("f");
+                    case 0: 
+                        state_default();
+                        break;
+                    case 1: 
+                        state_jump();
+                        break;
+                    case 2:
+                        state_fall();
+                        break;
+                    case 3:
+                        state_fire();
+                        break;
+                    default:
+                        state_default();
                 }
             }
 
+            function controls()
+            {
+                left = -Number(keys.A.isDown);
+                right = Number(keys.D.isDown);
+                player.setVelocityX((left + right)*340);
+                return(left+right);
+            }
 
+            function state_default()
+            {
+                if (controls() < 0)
+                {
+                    player.anims.play('left', true);
+                }
+                else if (controls() > 0)
+                {
+                    player.anims.play('right', true);
+                }
+                else if(controls() == 0)
+                {
+                    player.anims.play('idle');
+                }
+
+                if (keys.W.isDown)
+                {
+                    player.setVelocityY(-660);
+                    //alert(player.body.speed)
+                    state = 1
+                }
+
+            }
+
+            function state_jump()
+            {
+                controls()
+                player.anims.play('jump')
+
+                if (player.body.velocity.y > 0)
+                {
+                    state = 2
+                }
+
+                if (player.body.touching.down)
+                {
+                    state = 0
+                }
+            }
+
+            function state_fall()
+            {
+                controls()
+                player.anims.play('fall')
+
+                if (player.body.touching.down)
+                {
+                    state = 0
+                }
+            }
+
+            function state_fire()
+            {
+
+            }
         </script>
     </body>
 </html>
