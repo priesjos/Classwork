@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head> 
+        <meta charset="UTF-8" />
+        <title>test</title>
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+        <style type="text/css">
+            body {
+                margin: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <script type="text/javascript">
+
+            var config = {
+                type: Phaser.AUTO,
+                width: 1000,
+                height: 600,
+                inputKeyboard: true,
+                inputMouse: true,
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: { y: 1400 },
+                        debug: false
+                    }
+                },
+                scene: {
+                    preload: init,
+                    create: render,
+                    update: update
+                }
+            };
+
+            var game = new Phaser.Game(config);
+
+            function init()
+            {
+                //assets loaded in
+                this.load.image('sky', 'assets/sky.png');
+                this.load.image('ground', 'assets/concrete.png');
+                this.load.image('star', 'assets/star.png');
+                this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+            }
+
+            function render() 
+            {
+                //background image
+                this.add.image(500, 300, 'sky');
+
+                //adds platforms as a static group
+                platforms = this.physics.add.staticGroup();
+
+                //base ground
+                platforms.create(500, 568, 'ground').setScale(2.5).refreshBody();
+
+                //more platforms can be added later
+
+                //guy, with properties and collision, frame animations below
+                player = this.physics.add.sprite(100, 450, 'dude');
+                player.setCollideWorldBounds(true);
+
+                this.anims.create({
+                    key: 'left',
+                    frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                    frameRate: 10,
+                    repeat: -1
+                });
+
+                this.anims.create({
+                    key: 'turn',
+                    frames: [ { key: 'dude', frame: 4 } ],
+                    frameRate: 20
+                });
+
+                this.anims.create({
+                    key: 'right',
+                    frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                    frameRate: 10,
+                    repeat: -1
+                });
+
+                //set collision of dynamic objects with platforms
+                this.physics.add.collider(player, platforms);
+
+                //input detection
+                keys = this.input.keyboard.addKeys('W,A,S,D,F') // keys.W, keys.A, keys.S, keys.D, etc.
+
+            }
+
+            function update()
+            {
+                //movement
+                if (keys.A.isDown)
+                {
+                    player.setVelocityX(-340);
+
+                    player.anims.play('left', true);
+                }
+                else if (keys.D.isDown)
+                {
+                    player.setVelocityX(340);
+
+                    player.anims.play('right', true);
+                }
+                else
+                {
+                    player.setVelocityX(0);
+
+                    player.anims.play('turn');
+                }
+
+                if (keys.W.isDown && player.body.touching.down)
+                {
+                    player.setVelocityY(-660);
+                }
+
+                //attack
+                
+                if(keys.F.isDown)
+                {
+                    alert("f");
+                }
+            }
+
+
+        </script>
+    </body>
+</html>
