@@ -21,8 +21,12 @@
 
             var config = {
                 type: Phaser.AUTO,
-                width: 1000,
-                height: 600,
+                scale: {
+                    mode: Phaser.Scale.FIT,
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    width: 1000,
+                    height: 600
+                },
                 inputKeyboard: true,
                 inputMouse: true,
                 physics: {
