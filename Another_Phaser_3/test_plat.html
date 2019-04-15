@@ -68,23 +68,9 @@
                 platforms.create(50, 350, 'ground');
                 platforms.create(650, 220, 'ground');
 
-                //particle system, will be used for attacks
-                particle = this.add.particles('star').createEmitter({
-                    speed: { min: -15, max: -500 },
-                    angle: 0,
-                    scale: { start: 0.4, end: 0 },
-                    quantity: 2,
-                    alpha: { min: 1, max: 0 },
-                    gravityY: 500,
-                    lifespan: 1000,
-                    blendMode: 'ADD',
-                    on: false
-                })
-
                 //guy, with properties and collision, frame animations below
                 player = this.physics.add.sprite(100, 450, 'placeholder');
-                player.setCollideWorldBounds(true);
-
+                
                 this.anims.create({
                     key: 'left',
                     frames: this.anims.generateFrameNumbers('placeholder', { start: 0, end: 4 }),
@@ -129,6 +115,10 @@
                     frameRate: 20
                 })
 
+                
+                //camera stuff here
+                this.cameras.main.startFollow(player);
+                
                 //set collision of dynamic objects with platforms
                 this.physics.add.collider(player, platforms);
 
@@ -258,10 +248,6 @@
             function state_fire()
             {
                 player.anims.play('fire', true)
-
-                
-                particle.emitParticleAt(player.body.x, player.body.y)
-                //if (player.body.facing == 13){particle.angle = 180}
 
                 if (player.anims.getProgress() == 1) {state = 0}
             }
