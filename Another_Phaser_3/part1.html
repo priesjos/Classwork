@@ -20,7 +20,7 @@
                     mode: Phaser.Scale.FIT,
                     autoCenter: Phaser.Scale.CENTER_BOTH,
                     width: 1000,
-                    height: 540
+                    height: 500
                 },
                 inputKeyboard: true,
                 inputMouse: true,
@@ -197,6 +197,10 @@
                     player.setVelocityX(0)
                     state = 4
                 }
+                if (keys.SPACE.isDown) {alert("dash")}
+                
+                if (keys.SHIFT.isDOwn) {alert("backstep")}
+                
                 if (player.body.velocity.y > 0) {state = 2}
             }
             function state_jump()
@@ -242,9 +246,11 @@
             }
             function state_dash()
             {
+                
             }
             function state_backstep()
             {
+                
             }
         </script>
     </body>
