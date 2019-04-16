@@ -186,7 +186,6 @@
 
             function movement(body_param, speed)
             {
-                body_param.setAccelerationX(5)
                 body_param.setVelocityX(controls()*speed)
             }
 
@@ -200,7 +199,7 @@
                 else if(controls() == 0) {player.anims.play('idle')}
 
                 //state transitions
-                if (keys.SPACE.isDown)
+                if (keys.SPACE.isDown && player.body.touching.down)
                 {
                     player.setVelocityY(-720);
                     state = 1
