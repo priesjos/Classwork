@@ -13,10 +13,6 @@
     </head>
 
     <body>
-        <div>
-            thanos debug thanos debug
-
-        </div>
         <script type="text/javascript">
 
             var config = {
@@ -25,7 +21,7 @@
                     mode: Phaser.Scale.FIT,
                     autoCenter: Phaser.Scale.CENTER_BOTH,
                     width: 1000,
-                    height: 600
+                    height: 540
                 },
                 inputKeyboard: true,
                 inputMouse: true,
@@ -132,13 +128,6 @@
                 player.anims.play('idle')
                 state = 0
                 
-                /*
-                    state = 0; default
-                    state = 1; jumping
-                    state = 2; falling
-                    state = 3; firing
-                */
-
                 /*  
                     IMPORTANT INFO FOR THE BODY.FACING PROPERTY
                     11: facing up
@@ -172,6 +161,12 @@
                     case 5:
                         state_aerial();
                         break;
+                    case 6:
+                        state_dash();
+                        break;
+                    case 7:
+                        state_backstep();
+                        break;
                     default:
                         state_default();
                 }
@@ -186,8 +181,21 @@
 
             function movement(body_param, speed)
             {
+                //acceleration has to be done somehow
                 body_param.setVelocityX(controls()*speed)
             }
+
+            /*
+                Reminder
+                state = 0; default
+                state = 1; jumping
+                state = 2; falling
+                state = 3; firing
+                state = 4; crouching
+                state = 5; aerial attack
+                state = 6; dashing
+                state = 7; backstepping
+            */
 
             function state_default()
             {
@@ -199,7 +207,7 @@
                 else if(controls() == 0) {player.anims.play('idle')}
 
                 //state transitions
-                if (keys.SPACE.isDown && player.body.touching.down)
+                if (keys.UP.isDown && player.body.touching.down)
                 {
                     player.setVelocityY(-720);
                     state = 1
@@ -229,7 +237,7 @@
 
                 if (keys.Q.isDown) {state = 5}
 
-                if (keys.SPACE.isUp) {player.body.velocity.y *= 0.75}
+                if (keys.UP.isUp) {player.body.velocity.y *= 0.75}
 
                 if (player.body.velocity.y > 0) {state = 2}
 
@@ -275,6 +283,19 @@
                 }
                 if (player.body.touching.down) {state = 0}
             }
+
+            function state_dash()
+            {
+
+            }
+
+            function state_backstep()
+            {
+
+            }
         </script>
+        <div>
+            thanos debug thanos debug
+        </div>
     </body>
 </html>
