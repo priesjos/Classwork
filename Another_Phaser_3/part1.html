@@ -103,7 +103,6 @@
                 //camera stuff here
                 this.cameras.main.startFollow(player, false, 0.1, 0.1);
                 
-                
                 //set collision of dynamic objects with platforms
                 this.physics.add.collider(player, platforms);
                 //input detection
@@ -184,12 +183,12 @@
                 else if (controls() > 0) {player.anims.play('right', true)}
                 else if(controls() == 0) {player.anims.play('idle')}
                 //state transitions
-                if (keys.UP.isDown && player.body.touching.down)
+                if (Phaser.Input.Keyboard.JustDown(keys.UP) && player.body.touching.down)
                 {
                     player.setVelocityY(-720);
                     state = 1
                 }
-                if (keys.Q.isDown)
+                if (Phaser.Input.Keyboard.JustDown(keys.Q))
                 {
                     player.setVelocityX(0);
                     state = 3
@@ -199,28 +198,26 @@
                     player.setVelocityX(0)
                     state = 4
                 }
-                if (keys.SPACE.isDown) {state = 6}
+                if (Phaser.Input.Keyboard.JustDown(keys.SPACE)) {state = 6}
                 
-                if (keys.SHIFT.isDown) {state = 7}
+                if (Phaser.Input.Keyboard.JustDown(keys.SHIFT)) {state = 7}
                 
                 if (player.body.velocity.y > 0) {state = 2}
             }
             function state_jump()
             {
-                controls()
                 movement(player, 340)
                 player.anims.play('jump', true)
                 if (keys.UP.isUp) {player.body.velocity.y *= 0.75}
-                if (keys.Q.isDown) {state = 5}
+                if (Phaser.Input.Keyboard.JustDown(keys.Q)) {state = 5}
                 if (player.body.velocity.y > 0) {state = 2}
                 if (player.body.touching.down) {state = 0}
             }
             function state_fall()
             {
-                controls()
                 movement(player, 340)
                 player.anims.play('fall', true)
-                if (keys.Q.isDown) {state = 5}
+                if (Phaser.Input.Keyboard.JustDown(keys.Q)) {state = 5}
                 if (player.body.touching.down) {state = 0}
             }
             function state_fire()
@@ -235,7 +232,6 @@
             }
             function state_aerial()
             {
-                controls()
                 movement(player, 340)
                 player.anims.play('fire', true)
                 
@@ -261,7 +257,7 @@
             }
             function state_backstep()
             {
-                player.anims.play('fire', true);
+                player.anims.play('fall', true);
 
                 if (last_dir == -1) {player.setVelocityX(500)}
                 else player.setVelocityX(-500);
