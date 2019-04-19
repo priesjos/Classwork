@@ -55,10 +55,13 @@
                 //adds platforms as a static group
                 platforms = this.physics.add.staticGroup();
                 //base ground
-                platforms.create(500, 650, 'ground').setScale(5).refreshBody();
+                platforms.create(600, 650, 'ground').setScale(5).refreshBody();
                 platforms.create(600, 450, 'ground');
-                platforms.create(50, 350, 'ground');
-                platforms.create(650, 220, 'ground');
+                platforms.create(120, 350, 'ground');
+                platforms.create(600, 220, 'ground');
+                for (var i = -1; i < 12; i++){
+                    platforms.create((-i*140), -i*90, 'ground');
+                }
                 //guy, with properties and collision, frame animations below
                 player = this.physics.add.sprite(100, 450, 'placeholder');
                 
@@ -100,11 +103,15 @@
                     frameRate: 20
                 })
                 
+                //slash from attack animation
+                slashes = this.physics.add.group()
+
                 //camera stuff here
                 this.cameras.main.startFollow(player, false, 0.1, 0.1);
                 
                 //set collision of dynamic objects with platforms
                 this.physics.add.collider(player, platforms);
+
                 //input detection
                 keys = this.input.keyboard.addKeys('UP, LEFT, DOWN, RIGHT, Q, SPACE, SHIFT') // keys.W, keys.A, keys.S, keys.D, etc.
                 
@@ -151,7 +158,7 @@
                         state_default();
                 }
             }
-            var last_dir 
+            var last_dir = 1
             function controls()
             {
                 left = -Number(keys.LEFT.isDown);
@@ -191,6 +198,7 @@
                 if (Phaser.Input.Keyboard.JustDown(keys.Q))
                 {
                     player.setVelocityX(0);
+                    slash = slashes.create(player.body.x + (last_dir*30), player.body.y, 'star')
                     state = 3
                 }
                 if (keys.DOWN.isDown)
@@ -208,7 +216,7 @@
             {
                 movement(player, 340)
                 player.anims.play('jump', true)
-                if (keys.UP.isUp) {player.body.velocity.y *= 0.75}
+                if (keys.UP.isUp) {player.body.velocity.y *= 0.65}
                 if (Phaser.Input.Keyboard.JustDown(keys.Q)) {state = 5}
                 if (player.body.velocity.y > 0) {state = 2}
                 if (player.body.touching.down) {state = 0}
@@ -222,7 +230,9 @@
             }
             function state_fire()
             {
+                //player.disableBody(true,true) //this method will be used to delete the slash sprite from attacks
                 player.anims.play('fire', true)
+
                 if (player.anims.getProgress() == 1) {state = 0}
             }
             function state_crouch()
