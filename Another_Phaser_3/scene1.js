@@ -88,6 +88,7 @@ function render()
     })
     
     //slash from attack animation
+    slash_graphic = this.add.graphics()
     slashes = this.physics.add.group()
 
     //camera stuff here
@@ -165,6 +166,20 @@ function movement(body_param, speed)
     state = 6; dashing
     state = 7; backstepping
 */
+
+/*
+    function used for attacking
+    var RotateAroundDistance = function (point, x, y, angle, distance)
+    {
+        var t = angle + Math.atan2(point.y - y, point.x - x);
+
+        point.x = x + (distance * Math.cos(t));
+        point.y = y + (distance * Math.sin(t));
+
+        return point;
+    };
+
+*/
 function state_default()
 {
     movement(player, 340)
@@ -182,7 +197,10 @@ function state_default()
     if (Phaser.Input.Keyboard.JustDown(keys.Q))
     {
         player.setVelocityX(0);
-        slash = slashes.create(player.body.x + (last_dir*30), player.body.y, 'star')
+        slash = Phaser.Math.RotateAroundDistance(player.body.position, player.body.x, player.body.y, 30, 20)
+        slash_graphic.lineStyle(2, 0xff0000, 1);
+        slash_graphic.lineTo(slash.x, slash.y)
+        slash_graphic.moveTo(x, y);
         state = 3
     }
     if (keys.DOWN.isDown)
@@ -214,7 +232,7 @@ function state_fall()
 }
 function state_fire()
 {
-    //player.disableBody(true,true) //this method will be used to delete the slash sprite from attacks
+    //something.disableBody(true,true) //this method will be used to delete the slash sprite from attacks
     player.anims.play('fire', true)
 
     if (player.anims.getProgress() == 1) {state = 0}
