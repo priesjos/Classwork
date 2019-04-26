@@ -88,31 +88,59 @@ function render()
     })
     
     //slash from attack animation
-    slash_graphic = this.add.graphics()
-    slashes = this.physics.add.group()
+    slash_graphic = this.add.graphics();
+    slashes = this.physics.add.group();
 
-    //camera stuff here
+    /*
+    Thing to rotate around other thing
+    */
+    this.stars = this.physics.add.group({
+        key:'star',
+        frameQuantity: 10
+    })
+
+    this.circle = new Phaser.Geom.Circle(player.body.x, player.body.y, 60);
+
+    this.startAngle = this.tweens.addCounter({
+        from: 0,
+        to: 6.28,
+        duration: 3000,
+        repeat: -1
+    })
+
+    this.endAngle = this.tweens.addCounter({
+        from: 6.28,
+        to: 12.56,
+        duration: 3000,
+        repeat: -1
+    })
+
+    
+    //camera stuff heres
     this.cameras.main.startFollow(player, false, 0.1, 0.1);
     
     //set collision of dynamic objects with platforms
     this.physics.add.collider(player, platforms);
 
     //input detection
-    keys = this.input.keyboard.addKeys('UP, LEFT, DOWN, RIGHT, Q, SPACE, SHIFT') // keys.W, keys.A, keys.S, keys.D, etc.
+    keys = this.input.keyboard.addKeys('UP, LEFT, DOWN, RIGHT, Q, SPACE, SHIFT'); // keys.W, keys.A, keys.S, keys.D, etc.
     
-    player.anims.play('idle')
-    state = 0
-    
-    /*  
-        IMPORTANT INFO FOR THE BODY.FACING PROPERTY
-        11: facing up
-        12: facing down
-        13: facing left
-        14: facing right
-    */
+    player.anims.play('idle');
+    state = 0;
 }
+
 function update()
 {
+    //use setOrigin somehow to return the center of the player body so that this rotates from the center
+    Phaser.Actions.SetXY([this.circle], player.body.x, player.body.y);
+
+    Phaser.Actions.PlaceOnCircle(
+    this.stars.getChildren(), 
+    this.circle, 
+    this.startAngle.getValue(), 
+    this.endAngle.getValue()
+    );
+
     switch (state)
     {
         case 0: 
@@ -180,9 +208,10 @@ function movement(body_param, speed)
     };
 
 */
+
 function state_default()
 {
-    movement(player, 340)
+    movement(player, 340);
     //movement direction
     if (controls() !== 0) {last_dir = controls()}
     if (controls() < 0) {player.anims.play('left', true)}
@@ -192,21 +221,21 @@ function state_default()
     if (Phaser.Input.Keyboard.JustDown(keys.UP) && player.body.touching.down)
     {
         player.setVelocityY(-720);
-        state = 1
+        state = 1;
     }
     if (Phaser.Input.Keyboard.JustDown(keys.Q))
     {
         player.setVelocityX(0);
-        slash = Phaser.Math.RotateAroundDistance(player.body.position, player.body.x, player.body.y, 30, 20)
+        /*slash = Phaser.Math.RotateAroundDistance(player.body.position, player.body.x, player.body.y, 30, 20)
         slash_graphic.lineStyle(2, 0xff0000, 1);
         slash_graphic.lineTo(slash.x, slash.y)
-        slash_graphic.moveTo(x, y);
+        slash_graphic.moveTo(slash.x, slash.y);*/
         state = 3
     }
     if (keys.DOWN.isDown)
     {
-        player.setVelocityX(0)
-        state = 4
+        player.setVelocityX(0);
+        state = 4;
     }
     if (Phaser.Input.Keyboard.JustDown(keys.SPACE)) {state = 6}
     
@@ -216,8 +245,8 @@ function state_default()
 }
 function state_jump()
 {
-    movement(player, 340)
-    player.anims.play('jump', true)
+    movement(player, 340);
+    player.anims.play('jump', true);
     if (keys.UP.isUp) {player.body.velocity.y *= 0.65}
     if (Phaser.Input.Keyboard.JustDown(keys.Q)) {state = 5}
     if (player.body.velocity.y > 0) {state = 2}
@@ -225,8 +254,8 @@ function state_jump()
 }
 function state_fall()
 {
-    movement(player, 340)
-    player.anims.play('fall', true)
+    movement(player, 340);
+    player.anims.play('fall', true);
     if (Phaser.Input.Keyboard.JustDown(keys.Q)) {state = 5}
     if (player.body.touching.down) {state = 0}
 }
@@ -239,13 +268,13 @@ function state_fire()
 }
 function state_crouch()
 {
-    player.anims.play('crouch')
+    player.anims.play('crouch');
     if(keys.DOWN.isUp) {state = 0}
 }
 function state_aerial()
 {
-    movement(player, 340)
-    player.anims.play('fire', true)
+    movement(player, 340);
+    player.anims.play('fire', true);
     
     if (player.anims.getProgress() == 1) 
     {

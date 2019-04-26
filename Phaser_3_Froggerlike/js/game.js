@@ -66,7 +66,7 @@ gameScene.update = function()
     if (!this.isPlayerAlive) {return}
 
     if (this.input.activePointer.isDown) {this.player.x += this.playerSpeed}
-    if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.treasure.getBounds())) {this.gameOver()}
+    if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.treasure.getBounds())) {this.congrats()}
 
     let enemies = this.enemies.getChildren();
     let numEnemies = enemies.length;
@@ -96,6 +96,20 @@ gameScene.gameOver = function()
     this.cameras.main.shake(500);
 
     // fade camera
+    this.time.delayedCall(250, function() {
+        this.cameras.main.fade(250);
+    }, [], this);
+    
+    // restart game
+    this.time.delayedCall(500, function() {
+        this.scene.restart();
+    }, [], this);
+}
+
+gameScene.congrats = function()
+{
+    this.isPlayerAlive = false;
+
     this.time.delayedCall(250, function() {
         this.cameras.main.fade(250);
     }, [], this);
