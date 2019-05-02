@@ -18,7 +18,7 @@ class Player extends Entity
         super(scene, x, y, key, "Player");
         this.setData("speed", 200);
         this.setData("isShooting", false);
-        this.setData("timerShootDela", 10);
+        this.setData("timerShootDelay", 15);
         this.setData("timerShootTick", this.getData("timeShootDelay") - 1);
         this.play("sprPlayer");
     }
