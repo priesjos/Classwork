@@ -79,14 +79,76 @@ class SceneMain extends Phaser.Scene {
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.enemies = this.add.group();
+        this.enemyLasers = this.add.group();
+        this.playerLasers = this.add.group();
+
+        this.time.addEvent({
+            delay: 500,
+            callback: function () {
+                var enemy = new GunShip(this, Phaser.Math.Between(0, this.game.config.width), 0);
+                this.enemies.add(enemy);
+            },
+            callbackScope: this,
+            loop: true
+        });
+
+        
     }
 
     update()
     {
         this.player.update();
+
+        //the for loops below destroy items that get beyond the camera boundaries
+        for (var i = 0; i < this.enemies.getChildren().length; i++)
+        {
+            var enemy = this.enemies.getChildren()[i];
+            enemy.update();
+
+            if (enemy.x < -enemy.displayWidth ||
+                enemy.x > this.game.config.width + enemy.displayWidth ||
+                enemy.y < -enemy.displayHeight * 4 ||
+                enemy.y > this.game.config.height + enemy.displayHeight) {
+                if (enemy) 
+                {
+                    if (enemy.onDestroy !== undefined) {enemy.onDestroy()}
+                    enemy.destroy();
+                }
+            }
+        }
+
+        for (var i = 0; i < this.enemyLasers.getChildren().length; i++) {
+            var laser = this.enemyLasers.getChildren()[i];
+            laser.update();
+            if (laser.x < -laser.displayWidth ||
+                laser.x > this.game.config.width + laser.displayWidth ||
+                laser.y < -laser.displayHeight * 4 ||
+                laser.y > this.game.config.height + laser.displayHeight) {
+                    if (laser) {laser.destroy()}
+                }
+        }
+
+        for (var i = 0; i < this.playerLasers.getChildren().length; i++) {
+            var laser = this.playerLasers.getChildren()[i];
+            laser.update();
+            if (laser.x < -laser.displayWidth ||
+                laser.x > this.game.config.width + laser.displayWidth ||
+                laser.y < -laser.displayHeight * 4 ||
+                laser.y > this.game.config.height + laser.displayHeight) {
+                    if (laser) {laser.destroy()}
+                }
+        }
         if (this.keyW.isDown) {this.player.moveUp()}
         else if (this.keyS.isDown) {this.player.moveDown()}
         if (this.keyA.isDown) {this.player.moveLeft()}
         else if (this.keyD.isDown) {this.player.moveRight()}
+
+        if (this.keySpace.isDown){this.player.setData("isShooting", true)}
+        else {
+            this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
+            this.player.setData("isShooting", false);
+        }
     }
 }
