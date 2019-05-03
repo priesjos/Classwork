@@ -21,10 +21,13 @@ var config = {
         update: update
     }
 };
+
 var game = new Phaser.Game(config);
+//Because the structure of the code will be changed dramatically, sections of this code will be
+//marked in order to distinguish which scripts they can fit into
 function init()
 {
-    //assets loaded in
+    //assets loaded in, main scene
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/concrete.png');
     this.load.image('star', 'assets/star.png');
@@ -36,7 +39,7 @@ function render()
 {
     //background image
     this.add.image(500, 300, 'sky');
-    //adds platforms as a static group
+    //adds platforms as a static group, likely to have its own script for physics or something, dont know
     platforms = this.physics.add.staticGroup();
     //base ground
     platforms.create(600, 650, 'ground').setScale(5).refreshBody();
@@ -46,7 +49,7 @@ function render()
     for (var i = -1; i < 12; i++){
         platforms.create((-i*140), -i*90, 'ground');
     }
-    //guy, with properties and collision, frame animations below
+    //guy, with properties and collision, frame animations below, derives from entity script
     player = this.physics.add.sprite(100, 450, 'placeholder');
     
     this.anims.create({
@@ -87,12 +90,12 @@ function render()
         frameRate: 20
     })
     
-    //slash from attack animation
+    //slash from attack animation, derives from entity script
     slash_graphic = this.add.graphics();
     slashes = this.physics.add.group();
 
     /*
-    Thing to rotate around other thing
+    Thing to rotate around other thing, may be discarded
     */
     this.stars = this.physics.add.group({
         key:'star',
@@ -116,7 +119,7 @@ function render()
     })
 
     
-    //camera stuff heres
+    //camera stuff here, might have its own script
     this.cameras.main.startFollow(player, false, 0.1, 0.1);
     
     //set collision of dynamic objects with platforms
