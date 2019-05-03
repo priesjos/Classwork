@@ -51,6 +51,7 @@ function render()
     }
     //guy, with properties and collision, frame animations below, derives from entity script
     player = this.physics.add.sprite(100, 450, 'placeholder');
+    player.setOrigin()
     
     this.anims.create({
         key: 'left',
@@ -102,19 +103,19 @@ function render()
         frameQuantity: 10
     })
 
-    this.circle = new Phaser.Geom.Circle(player.body.x, player.body.y, 60);
+    this.circle = new Phaser.Geom.Circle(player.body.x, player.body.y, 44);
 
     this.startAngle = this.tweens.addCounter({
-        from: 0,
-        to: 6.28,
-        duration: 3000,
+        from: 4.5,
+        to: 6.5,
+        duration: 200,
         repeat: -1
     })
 
     this.endAngle = this.tweens.addCounter({
-        from: 6.28,
-        to: 12.56,
-        duration: 3000,
+        from: 6.5,
+        to: 7.5,
+        duration: 200,
         repeat: -1
     })
 
@@ -134,8 +135,7 @@ function render()
 
 function update()
 {
-    //use setOrigin somehow to return the center of the player body so that this rotates from the center
-    Phaser.Actions.SetXY([this.circle], player.body.x, player.body.y);
+    Phaser.Actions.SetXY([this.circle], player.body.x + 10, player.body.y + 20);
 
     Phaser.Actions.PlaceOnCircle(
     this.stars.getChildren(), 
@@ -174,6 +174,8 @@ function update()
             state_default();
     }
 }
+
+
 var last_dir = 1
 function controls()
 {
