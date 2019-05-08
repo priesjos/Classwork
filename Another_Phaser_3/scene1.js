@@ -135,15 +135,6 @@ function render()
 
 function update()
 {
-    Phaser.Actions.SetXY([this.circle], player.body.x + 10, player.body.y + 20);
-
-    Phaser.Actions.PlaceOnCircle(
-    this.stars.getChildren(), 
-    this.circle, 
-    this.startAngle.getValue(), 
-    this.endAngle.getValue()
-    );
-
     switch (state)
     {
         case 0: 
