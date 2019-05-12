@@ -130,7 +130,6 @@ function dummyHit()
 function update()
 {
     hitZoneToPlayer()
-    playerHitZone.body.x += 8
     switch (state)
     {
         case 0: 
