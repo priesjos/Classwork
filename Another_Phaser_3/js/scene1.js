@@ -39,7 +39,7 @@ function render()
 {
     //background image
     this.add.image(500, 300, 'sky');
-    //adds platforms as a static group, likely to have its own script for physics or something, dont know
+    //adds platforms as a static group
     platforms = this.physics.add.staticGroup();
     //base ground
     platforms.create(600, 650, 'ground').setScale(5).refreshBody();
@@ -51,7 +51,7 @@ function render()
     }
     //guy, with properties and collision, frame animations below, derives from entity script
     player = this.physics.add.sprite(100, 450, 'placeholder');
-    player.setOrigin()
+    dummy = this.physics.add.sprite(300, 450, 'placeholder')
     
     this.anims.create({
         key: 'left',
@@ -91,59 +91,46 @@ function render()
         frameRate: 20
     })
     
+    enemies = this.add.group()
+
+    enemies.add(dummy)
     //slash from attack animation, derives from entity script
-    slash_graphic = this.add.graphics();
-    slashes = this.physics.add.group();
+    playerHitZone = this.physics.add.sprite(23, 24, "placeholder")
+    playerHitZone.anims.play("crouch")
+    playerHitZone.setGravityY(-1600)
 
-    /*
-    Thing to rotate around other thing, may be discarded
-    */
-    this.stars = this.physics.add.group({
-        key:'star',
-        frameQuantity: 10
-    })
-
-    this.circle = new Phaser.Geom.Circle(player.body.x, player.body.y, 44);
-
-    this.startAngle = this.tweens.addCounter({
-        from: 4.5,
-        to: 6.5,
-        duration: 200,
-        repeat: -1
-    })
-
-    this.endAngle = this.tweens.addCounter({
-        from: 6.5,
-        to: 7.5,
-        duration: 200,
-        repeat: -1
-    })
-
-    
     //camera stuff here, might have its own script
     this.cameras.main.startFollow(player, false, 0.1, 0.1);
     
     //set collision of dynamic objects with platforms
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(dummy, platforms);
+    //this.physics.add.collider(enemies, playerHitZone, dummyHit, null, this)
 
     //input detection
     keys = this.input.keyboard.addKeys('UP, LEFT, DOWN, RIGHT, Q, SPACE, SHIFT'); // keys.W, keys.A, keys.S, keys.D, etc.
     
     player.anims.play('idle');
+    dummy.anims.play('idle')
     state = 0;
 }
 
+function hitZoneToPlayer()
+{
+    playerHitZone.x = player.x
+    playerHitZone.y = player.y
+}
+
+/*
+function dummyHit()
+{
+    alert("dummy hit")
+}
+*/
 function update()
 {
-    Phaser.Actions.SetXY([this.circle], player.body.x + 10, player.body.y + 20);
-
-    Phaser.Actions.PlaceOnCircle(
-    this.stars.getChildren(), 
-    this.circle, 
-    this.startAngle.getValue(), 
-    this.endAngle.getValue()
-    );
-
+    hitZoneToPlayer()
+    playerHitZone.body.x += 8
     switch (state)
     {
         case 0: 
@@ -200,20 +187,6 @@ function movement(body_param, speed)
     state = 7; backstepping
 */
 
-/*
-    function used for attacking
-    var RotateAroundDistance = function (point, x, y, angle, distance)
-    {
-        var t = angle + Math.atan2(point.y - y, point.x - x);
-
-        point.x = x + (distance * Math.cos(t));
-        point.y = y + (distance * Math.sin(t));
-
-        return point;
-    };
-
-*/
-
 function state_default()
 {
     movement(player, 340);
@@ -231,10 +204,7 @@ function state_default()
     if (Phaser.Input.Keyboard.JustDown(keys.Q))
     {
         player.setVelocityX(0);
-        /*slash = Phaser.Math.RotateAroundDistance(player.body.position, player.body.x, player.body.y, 30, 20)
-        slash_graphic.lineStyle(2, 0xff0000, 1);
-        slash_graphic.lineTo(slash.x, slash.y)
-        slash_graphic.moveTo(slash.x, slash.y);*/
+        alert(playerHitZone.getBounds())
         state = 3
     }
     if (keys.DOWN.isDown)
